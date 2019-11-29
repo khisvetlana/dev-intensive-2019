@@ -6,17 +6,17 @@ import ru.skillbranch.devintensive.ulits.Utils
 import java.util.*
 
 fun User.toUserView(): UserView {
-   // val nickname = Utils.transliteration("$firstName $lastName")
-   // val initials = Utils.toInitials(firstName, lastName)
+    val nickname = Utils.transliteration("$firstName $lastName")
+    val initials = Utils.toInitials(firstName, lastName)
     val status = if (lastVisit == null) "Еще ни разу не был"
                  else if (isOnline) "online"
-                 else "Последний раз был ${lastVisit.humanizeDiff()}"
+                 else "Последний раз был ${(lastVisit as Date).humanizeDiff()}"
     return UserView(
         id,
         fullName = "$firstName $lastName",
         avatar = avatar,
-        nickName = "Makeev Mikhail",//nickname,
-        initials = "ММ",//initials,
-        status = "был"//status
+        nickName = nickname,
+        initials = initials,
+        status = status
     )
 }
