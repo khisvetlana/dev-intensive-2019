@@ -102,39 +102,3 @@ fun Date.humanizeDiff(date: Date = Date()): String {
                 else return "более года назад"
     }
 }
-
-//    fun getCorrectTimeUnit(count: Long, timeUnit: TimeUnits): String {
-//        val preLastDigit = count % 100 / 10
-//        if (preLastDigit == 1L) {
-//            when (timeUnit) {
-//              TimeUnits.SECOND -> return "секунд"
-//              TimeUnits.MINUTE -> return "минут"
-//              TimeUnits.HOUR -> return "часов"
-//              TimeUnits.DAY -> return "дней"
-//            }
-//        }
-//
-//        when (count % 10L) {
-//            1L ->
-//                when (timeUnit) {
-//                    TimeUnits.SECOND -> return "секунда"
-//                    TimeUnits.MINUTE -> return "минута"
-//                    TimeUnits.HOUR -> return "час"
-//                    TimeUnits.DAY -> return "день"
-//                }
-//            2L, 3L, 4L ->
-//                when (timeUnit) {
-//                    TimeUnits.SECOND -> return "секунды"
-//                    TimeUnits.MINUTE -> return "минуты"
-//                    TimeUnits.HOUR -> return "часа"
-//                    TimeUnits.DAY -> return "дня"
-//                }
-//            else ->
-//                when (timeUnit) {
-//                    TimeUnits.SECOND -> return "секунд"
-//                    TimeUnits.MINUTE -> return "минут"
-//                    TimeUnits.HOUR -> return "часов"
-//                    TimeUnits.DAY -> return "дней"
-//                }
-//        }
-//    }
