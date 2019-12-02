@@ -1,6 +1,6 @@
 package ru.skillbranch.devintensive.models
 
-import ru.skillbranch.devintensive.ulits.Utils
+import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
 data class User private constructor(
@@ -19,11 +19,6 @@ data class User private constructor(
         lastName = lastName,
         avatar = null
     )
-
-    init {
-        println("It's Alive!!! \n" +
-                "${if (lastName === "Doe") "His name is $firstName $lastName" else "And his name is $firstName $lastName"} \n")
-    }
 
     companion object Factory{
         private var lastId : Int = -1
