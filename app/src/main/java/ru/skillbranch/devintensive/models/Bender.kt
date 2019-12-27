@@ -14,7 +14,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
         var validationText = ""
-        when (question) {
+/*        when (question) {
             Question.NAME -> {
                 validationText = "Имя должно начинаться с заглавной буквы"
             }
@@ -33,7 +33,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
             Question.IDLE -> {
                 validationText = ""
             }
-        }
+        }*/
 
 
         return if (question.answers.contains(answer)) {
@@ -48,7 +48,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
                 status = status.nextStatus()
-                (validationText + "\n${question.question}") to status.color
+                (validationText + "Это неправильный ответ\n${question.question}") to status.color
             }
         }
     }
