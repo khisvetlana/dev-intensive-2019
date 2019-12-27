@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.res.Resources
+
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         val parts : List<String>? = fullName?.split(" ")
@@ -150,4 +152,12 @@ object Utils {
     "э": "e",
     "ю": "yu",
     "я": "ya",*/
+
+    val KEYBOARD_VISIBLE_THRESHOLD_DP = 100
+
+    fun dip(value: Int): Int {
+        return (value * Resources.getSystem().displayMetrics.density).toInt()
+    }
+
+
 }
