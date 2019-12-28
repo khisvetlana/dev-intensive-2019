@@ -1,6 +1,8 @@
 package ru.skillbranch.devintensive.models
 
-class Bender(var status: Status = Status.NORMAL, var question: Question = Bender.Question.NAME) {
+import org.intellij.lang.annotations.RegExp
+
+class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
     var attemptsCount: Int = 0
 
     fun askQuestion(): String = when(question){
@@ -14,29 +16,40 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
         var validationText = ""
-/*        when (question) {
+        var validationResult = true
+        when (question) {
             Question.NAME -> {
-                validationText = "Имя должно начинаться с заглавной буквы"
+                validationResult = answer[0].isUpperCase()
+                if (!validationResult)
+                    validationText = "Имя должно начинаться с заглавной буквы"
             }
             Question.PROFESSION -> {
-                validationText = "Профессия должна начинаться со строчной буквы"
+                validationResult = answer[0].isLowerCase()
+                if (!validationResult)
+                    validationText = "Профессия должна начинаться со строчной буквы"
             }
             Question.MATERIAL -> {
-                validationText = "Материал не должен содержать цифр"
+                validationResult = onlyLetters(answer)
+                if (!validationResult)
+                    validationText = "Материал не должен содержать цифр"
             }
             Question.BDAY -> {
-                validationText = "Год моего рождения должен содержать только цифры"
+                validationResult = onlyNumbers(answer)
+                if (!validationResult)
+                    validationText = "Год моего рождения должен содержать только цифры"
             }
             Question.SERIAL -> {
-                validationText = "Серийный номер содержит только цифры, и их 7"
+                validationResult = correctSerialNumber(answer)
+                if (!validationResult)
+                    validationText = "Серийный номер содержит только цифры, и их 7"
             }
             Question.IDLE -> {
                 validationText = ""
             }
-        }*/
+        }
 
 
-        return if (question.answers.contains(answer)) {
+        return if (question.answers.contains(answer.toLowerCase()) && validationResult) {
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
@@ -44,20 +57,40 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
             if (attemptsCount >= 3) {
                 attemptsCount = 0
                 status = Status.NORMAL
-                question = Bender.Question.NAME
+                question = Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                status = status.nextStatus()
-                (validationText + "Это неправильный ответ\n${question.question}") to status.color
+                if(!validationResult){
+                    status = Status.NORMAL
+                    (validationText + "\n"+"Это неправильный ответ\n${question.question}") to status.color
+                } else {
+                    status = status.nextStatus()
+                     "Это неправильный ответ\n${question.question}" to status.color
+                }
             }
         }
     }
 
+    fun onlyLetters(answer: String): Boolean{
+        val regex = Regex(pattern = """[A-Za-zА-Яа-я]+""")
+        return regex.matches(answer)
+    }
+
+    fun onlyNumbers(answer: String): Boolean{
+        val regex = Regex(pattern = """[0-9]+""")
+        return regex.matches(answer)
+    }
+
+    fun correctSerialNumber(answer: String): Boolean{
+        val regex = Regex(pattern = "[0-9]{7}")
+        return regex.matches(answer)
+    }
+
     enum class Status(val color:Triple<Int, Int, Int> ) {
-        NORMAL(Triple(255,255,255)),
-        WARNING(Triple(255,120,0)),
-        DANGER(Triple(255,60,60)),
-        CRITICAL(Triple(255,255,0));
+        NORMAL(Triple(255, 255, 255)) ,
+        WARNING(Triple(255, 120, 0)),
+        DANGER(Triple(255, 60, 60)),
+        CRITICAL(Triple(255, 0, 0)) ;
 
         fun nextStatus(): Status {
             return if (this.ordinal < values().lastIndex){
