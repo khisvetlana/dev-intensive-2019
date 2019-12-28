@@ -51,6 +51,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
         return if (question.answers.contains(answer.toLowerCase()) && validationResult) {
             question = question.nextQuestion()
+            attemptsCount = 0
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
             attemptsCount++
@@ -62,7 +63,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             } else {
                 if(!validationResult){
                     status = Status.NORMAL
-                    (validationText + "\n"+"Это неправильный ответ\n${question.question}") to status.color
+                    (validationText + "\n"+"${question.question}") to status.color
                 } else {
                     status = status.nextStatus()
                      "Это неправильный ответ\n${question.question}" to status.color
