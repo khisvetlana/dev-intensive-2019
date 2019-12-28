@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         messageEt.setOnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 sendAnswer()
-                hideKeyboard(activity_main)
+                hideKeyboard()
 
                 true
             } else {
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.iv_send -> {
                 sendAnswer()
-                hideKeyboard(activity_main)
+                hideKeyboard()
             }
         }
     }

@@ -10,11 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import ru.skillbranch.devintensive.utils.Utils.KEYBOARD_VISIBLE_THRESHOLD_DP
 import ru.skillbranch.devintensive.utils.Utils.dip
 
-fun Activity.hideKeyboard(parent: View?){
-    parent?.let { v ->
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.hideSoftInputFromWindow(v.windowToken, 0)
-    }
+fun Activity.hideKeyboard(){
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.hideSoftInputFromWindow(getActivityRoot().windowToken, 0)
 }
 
 
