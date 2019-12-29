@@ -1,8 +1,6 @@
 package ru.skillbranch.devintensive.models
 
-import org.intellij.lang.annotations.RegExp
-
-class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
+class Bender(var status: Status = Status.NORMAL, var question: Question = Bender.Question.NAME) {
     var attemptsCount: Int = 0
 
     fun askQuestion(): String = when(question){
@@ -15,76 +13,45 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
-        var validationText = ""
-        var validationResult = true
-        when (question) {
+/*         var validationText = ""
+       when (question) {
             Question.NAME -> {
-                validationResult = answer[0].isUpperCase()
-                if (!validationResult)
-                    validationText = "Имя должно начинаться с заглавной буквы"
+                validationText = "Имя должно начинаться с заглавной буквы"
             }
             Question.PROFESSION -> {
-                validationResult = answer[0].isLowerCase()
-                if (!validationResult)
-                    validationText = "Профессия должна начинаться со строчной буквы"
+                validationText = "Профессия должна начинаться со строчной буквы"
             }
             Question.MATERIAL -> {
-                validationResult = onlyLetters(answer)
-                if (!validationResult)
-                    validationText = "Материал не должен содержать цифр"
+                validationText = "Материал не должен содержать цифр"
             }
             Question.BDAY -> {
-                validationResult = onlyNumbers(answer)
-                if (!validationResult)
-                    validationText = "Год моего рождения должен содержать только цифры"
+                validationText = "Год моего рождения должен содержать только цифры"
             }
             Question.SERIAL -> {
-                validationResult = correctSerialNumber(answer)
-                if (!validationResult)
-                    validationText = "Серийный номер содержит только цифры, и их 7"
+                validationText = "Серийный номер содержит только цифры, и их 7"
             }
             Question.IDLE -> {
                 validationText = ""
             }
-        }
+        }*/
 
 
-        return if (question.answers.contains(answer.toLowerCase()) && validationResult) {
+        return if (question.equals(Bender.Question.IDLE) || question.answers.contains(answer)) {
             question = question.nextQuestion()
-            attemptsCount = 0
-            status = Status.NORMAL
+            //status = Status.NORMAL
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
             attemptsCount++
             if (attemptsCount >= 3) {
                 attemptsCount =  0
                 status = Status.NORMAL
-                question = Question.NAME
+                question = Bender.Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                if(validationResult){
-                        status = status.nextStatus()
-                        return  "Это неправильный ответ\n${question.question}" to status.color
-                } else {
-                   (validationText + "\n"+"${question.question}") to status.color
-                }
+                status = status.nextStatus()
+                "Это неправильный ответ\n${question.question}" to status.color
             }
         }
-    }
-
-    fun onlyLetters(answer: String): Boolean{
-        val regex = Regex(pattern = """[A-Za-zА-Яа-я]+""")
-        return regex.matches(answer)
-    }
-
-    fun onlyNumbers(answer: String): Boolean{
-        val regex = Regex(pattern = """[0-9]+""")
-        return regex.matches(answer)
-    }
-
-    fun correctSerialNumber(answer: String): Boolean{
-        val regex = Regex(pattern = "[0-9]{7}")
-        return regex.matches(answer)
     }
 
     enum class Status(val color:Triple<Int, Int, Int> ) {
