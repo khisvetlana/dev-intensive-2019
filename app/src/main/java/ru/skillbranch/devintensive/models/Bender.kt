@@ -103,13 +103,13 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     enum class Question(val question: String, val answers: List<String>){
-        NAME("Как меня зовут?", listOf("бендер","bender")) {
+        NAME("Как меня зовут?", listOf("Бендер", "bender")) {
             override fun nextQuestion(): Question  = PROFESSION
         },
-        PROFESSION("Назови мою профессию?", listOf("сгибальщик","bender")){
+        PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")){
             override fun nextQuestion(): Question  = MATERIAL
         },
-        MATERIAL("Из чего я сделан?", listOf("металл","дерево","metal","iron","","wood")){
+        MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "metal", "iron", "wood")){
             override fun nextQuestion(): Question  = BDAY
         },
         BDAY("Когда меня создали?", listOf("2993")){
@@ -118,7 +118,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         SERIAL("Мой серийный номер?", listOf("2716057")){
             override fun nextQuestion(): Question  = IDLE
         },
-        IDLE("На этом все, вопросов больше нет", listOf("","")) {
+        IDLE("На этом все, вопросов больше нет", listOf()) {
             override fun nextQuestion(): Question  = IDLE
         };
 
