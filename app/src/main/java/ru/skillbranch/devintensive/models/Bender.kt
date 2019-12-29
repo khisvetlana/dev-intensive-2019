@@ -17,7 +17,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
         var validationText = ""
         var validationResult = true
-/*        when (question) {
+        when (question) {
             Question.NAME -> {
                 validationResult = answer[0].isUpperCase()
                 if (!validationResult)
@@ -46,7 +46,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             Question.IDLE -> {
                 validationText = ""
             }
-        }*/
+        }
 
 
         if (question.answers.contains(answer.toLowerCase()) && validationResult) {
