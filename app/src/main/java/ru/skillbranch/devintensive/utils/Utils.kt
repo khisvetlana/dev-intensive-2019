@@ -88,7 +88,7 @@ object Utils {
             'С'-> "S"
             'т'-> "t"
             'Т'-> "T"
-            'у'-> "u"
+            'y'-> "u"
             'у'-> "U"
             'ф'-> "f"
             'Ф'-> "F"
@@ -153,7 +153,7 @@ object Utils {
     "ю": "yu",
     "я": "ya",*/
 
-    val KEYBOARD_VISIBLE_THRESHOLD_DP = 100
+    val KEYBOARD_VISIBLE_THRESHOLD_DP = 50
 
     fun dip(value: Int): Int {
         return (value * Resources.getSystem().displayMetrics.density).toInt()

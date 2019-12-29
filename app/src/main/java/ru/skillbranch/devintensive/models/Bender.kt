@@ -57,7 +57,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         } else {
             attemptsCount++
             if (attemptsCount >= 3) {
-                attemptsCount = 0
+                attemptsCount =  0
                 status = Status.NORMAL
                 question = Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color

@@ -1,11 +1,13 @@
 package ru.skillbranch.devintensive
 
+import android.content.ContentResolver
 import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -15,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.*
 import ru.skillbranch.devintensive.models.Bender
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
     lateinit var benderImage : ImageView
     lateinit var textTxt : TextView
     lateinit var messageEt : EditText
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
 
-        messageEt.setOnEditorActionListener { v, actionId, event ->
+        messageEt.setOnEditorActionListener(this) /*{ v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 sendAnswer()
                 hideKeyboard()
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 false
             }
-        }
+        }*/
     }
 
 
@@ -116,5 +118,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = phrase
     }
 
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        return if(actionId == EditorInfo.IME_ACTION_DONE){
+            sendAnswer()
+            hideKeyboard()
+
+            true
+        } else {
+            false
+        }
+    }
 
 }
