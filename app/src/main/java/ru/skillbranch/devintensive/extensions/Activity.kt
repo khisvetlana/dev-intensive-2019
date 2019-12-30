@@ -11,8 +11,11 @@ import ru.skillbranch.devintensive.utils.Utils.KEYBOARD_VISIBLE_THRESHOLD_DP
 import ru.skillbranch.devintensive.utils.Utils.dip
 
 fun Activity.hideKeyboard(){
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-    imm?.hideSoftInputFromWindow(getActivityRoot().windowToken, 0)
+    val focus = this.currentFocus
+    focus?.let {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(getActivityRoot().windowToken, 0)
+    }
 }
 
 
