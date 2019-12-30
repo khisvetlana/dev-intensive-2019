@@ -34,7 +34,7 @@ fun Activity.isKeyboardOpen(): Boolean {
 }
 
 fun Activity.isKeyboardClosed(): Boolean {
-    return !isKeyboardOpened()//this.isKeyboardOpen()
+    return !this.isKeyboardOpened()
 }
 
 fun Activity.getRootView(): View {
@@ -56,6 +56,6 @@ fun Activity.isKeyboardOpened(): Boolean {
 }
 
 fun Activity.getActivityRoot(): View {
-    return (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0);
+    return findViewById<View>(android.R.id.content)//(findViewById<ViewGroup>(android.R.id.content)).getChildAt(0);
 }
 
