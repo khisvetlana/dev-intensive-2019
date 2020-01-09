@@ -13,27 +13,38 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
     }
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
-/*         var validationText = ""
-       when (question) {
+       var validationText = ""
+        var validationResult = true
+        when (question) {
             Question.NAME -> {
-                validationText = "Имя должно начинаться с заглавной буквы"
+                validationResult = answer[0].isUpperCase()
+                if (!validationResult)
+                    validationText = "Имя должно начинаться с заглавной буквы"
             }
             Question.PROFESSION -> {
-                validationText = "Профессия должна начинаться со строчной буквы"
+                validationResult = answer[0].isLowerCase()
+                if (!validationResult)
+                    validationText = "Профессия должна начинаться со строчной буквы"
             }
             Question.MATERIAL -> {
-                validationText = "Материал не должен содержать цифр"
+                validationResult = onlyLetters(answer)
+                if (!validationResult)
+                    validationText = "Материал не должен содержать цифр"
             }
             Question.BDAY -> {
-                validationText = "Год моего рождения должен содержать только цифры"
+                validationResult = onlyNumbers(answer)
+                if (!validationResult)
+                    validationText = "Год моего рождения должен содержать только цифры"
             }
             Question.SERIAL -> {
-                validationText = "Серийный номер содержит только цифры, и их 7"
+                validationResult = correctSerialNumber(answer)
+                if (!validationResult)
+                    validationText = "Серийный номер содержит только цифры, и их 7"
             }
             Question.IDLE -> {
                 validationText = ""
             }
-        }*/
+        }
 
 
         return if (question.equals(Bender.Question.IDLE) || question.answers.contains(answer)) {
@@ -41,17 +52,36 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
             //status = Status.NORMAL
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
-            attemptsCount++
-            if (attemptsCount >= 3) {
+             if (attemptsCount >= 3) {
                 attemptsCount =  0
                 status = Status.NORMAL
                 question = Bender.Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                status = status.nextStatus()
-                "Это неправильный ответ\n${question.question}" to status.color
+                if(validationResult) {
+                    attemptsCount++
+                    status = status.nextStatus()
+                    "Это неправильный ответ\n${question.question}" to status.color
+                } else {
+                    (validationText + "\n${question.question}") to status.color
+                }
             }
         }
+    }
+
+    fun onlyLetters(answer: String): Boolean{
+        val regex = Regex(pattern = """[A-Za-zА-Яа-я]+""")
+        return regex.matches(answer)
+    }
+
+    fun onlyNumbers(answer: String): Boolean{
+        val regex = Regex(pattern = """[0-9]+""")
+        return regex.matches(answer)
+    }
+
+    fun correctSerialNumber(answer: String): Boolean{
+        val regex = Regex(pattern = "[0-9]{7}")
+        return regex.matches(answer)
     }
 
     enum class Status(val color:Triple<Int, Int, Int> ) {
@@ -70,7 +100,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
     }
 
     enum class Question(val question: String, val answers: List<String>){
-        NAME("Как меня зовут?", listOf("Бендер", "bender")) {
+        NAME("Как меня зовут?", listOf("Бендер", "Bender")) {
             override fun nextQuestion(): Question  = PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")){
