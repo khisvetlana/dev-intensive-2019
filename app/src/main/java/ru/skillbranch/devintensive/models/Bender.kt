@@ -52,14 +52,14 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
             //status = Status.NORMAL
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
-             if (attemptsCount >= 3) {
+            attemptsCount++
+            if (attemptsCount >= 3) {
                 attemptsCount =  0
                 status = Status.NORMAL
                 question = Bender.Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
                 if(validationResult) {
-                    attemptsCount++
                     status = status.nextStatus()
                     "Это неправильный ответ\n${question.question}" to status.color
                 } else {
