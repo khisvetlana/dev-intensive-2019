@@ -1,8 +1,6 @@
 package ru.skillbranch.devintensive.models
 
 class Bender(var status: Status = Status.NORMAL, var question: Question = Bender.Question.NAME) {
-    var attemptsCount: Int = 0
-
     fun askQuestion(): String = when(question){
         Question.NAME -> Question.NAME.question
         Question.PROFESSION -> Question.PROFESSION.question
@@ -48,24 +46,23 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
             }
         }
 
-        return if (question.equals(Bender.Question.IDLE) || question.answers.contains(answer)) {
+        return if (question == Bender.Question.IDLE || question.answers.contains(answer)) {
             question = question.nextQuestion()
-            //status = Status.NORMAL
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
-            if (attemptsCount >= 3) {
-                attemptsCount =  0
-                status = Status.NORMAL
-                question = Bender.Question.NAME
-                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-            } else {
-                if(validationResult) {
-                    attemptsCount++
+            if(validationResult) {
+                if (answer.isNotEmpty()) {
                     status = status.nextStatus()
-                    "Это неправильный ответ\n${question.question}" to status.color
-                } else {
-                    (validationText + "\n${question.question}") to status.color
                 }
+
+                if (status == Status.NORMAL && answer.isNotEmpty()){
+                    question = Bender.Question.NAME
+                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                } else {
+                    "Это неправильный ответ\n${question.question}" to status.color
+                }
+            } else {
+                (validationText + "\n${question.question}") to status.color
             }
         }
     }
