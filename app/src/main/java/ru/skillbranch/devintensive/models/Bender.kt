@@ -15,37 +15,38 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
        var validationText = ""
         var validationResult = true
-        when (question) {
-            Question.NAME -> {
-                validationResult = answer[0].isUpperCase()
-                if (!validationResult)
-                    validationText = "Имя должно начинаться с заглавной буквы"
-            }
-            Question.PROFESSION -> {
-                validationResult = answer[0].isLowerCase()
-                if (!validationResult)
-                    validationText = "Профессия должна начинаться со строчной буквы"
-            }
-            Question.MATERIAL -> {
-                validationResult = onlyLetters(answer)
-                if (!validationResult)
-                    validationText = "Материал не должен содержать цифр"
-            }
-            Question.BDAY -> {
-                validationResult = onlyNumbers(answer)
-                if (!validationResult)
-                    validationText = "Год моего рождения должен содержать только цифры"
-            }
-            Question.SERIAL -> {
-                validationResult = correctSerialNumber(answer)
-                if (!validationResult)
-                    validationText = "Серийный номер содержит только цифры, и их 7"
-            }
-            Question.IDLE -> {
-                validationText = ""
+        if (answer != null && answer.isNotEmpty()) {
+            when (question) {
+                Question.NAME -> {
+                    validationResult = answer[0].isUpperCase()
+                    if (!validationResult)
+                        validationText = "Имя должно начинаться с заглавной буквы"
+                }
+                Question.PROFESSION -> {
+                    validationResult = answer[0].isLowerCase()
+                    if (!validationResult)
+                        validationText = "Профессия должна начинаться со строчной буквы"
+                }
+                Question.MATERIAL -> {
+                    validationResult = onlyLetters(answer)
+                    if (!validationResult)
+                        validationText = "Материал не должен содержать цифр"
+                }
+                Question.BDAY -> {
+                    validationResult = onlyNumbers(answer)
+                    if (!validationResult)
+                        validationText = "Год моего рождения должен содержать только цифры"
+                }
+                Question.SERIAL -> {
+                    validationResult = correctSerialNumber(answer)
+                    if (!validationResult)
+                        validationText = "Серийный номер содержит только цифры, и их 7"
+                }
+                Question.IDLE -> {
+                    validationText = ""
+                }
             }
         }
-
 
         return if (question.equals(Bender.Question.IDLE) || question.answers.contains(answer)) {
             question = question.nextQuestion()
@@ -58,8 +59,8 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Bender
                 question = Bender.Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                attemptsCount++
                 if(validationResult) {
+                    attemptsCount++
                     status = status.nextStatus()
                     "Это неправильный ответ\n${question.question}" to status.color
                 } else {
