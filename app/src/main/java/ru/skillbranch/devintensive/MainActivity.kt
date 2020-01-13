@@ -67,10 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener/*, TextView.OnEdi
             } else {
                 false
             }
-
         }
-
-        hideKeyboard()
     }
 
 
